@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+    "fmt"
+	"os"
+)
 
 func main() {
-    fmt.Println("Hello, World3!")
+ 	data, err := os.ReadFile("test.txt")
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	fmt.Println(string(data))
 }
