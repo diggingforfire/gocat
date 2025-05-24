@@ -2,24 +2,26 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 )
 
-func main() {
-	if len(os.Args) < 2 || os.Args[1] == "-" {
-		input, err := os.ReadFile("/dev/stdin")
-		if err != nil {
-			fmt.Println("Error reading from stdin:", err)
-			return
-		}
-		fmt.Print(string(input))
-		return
-	}
-	filename := os.Args[1]
-	data, err := os.ReadFile(filename)
+func logFatalIfErr(msg string, err error) {
 	if err != nil {
-		fmt.Println("Error reading file:", err)
-		return
+		log.Fatal(msg, err)
 	}
+}
+
+func getFilenameFromArgs() string {
+	if len(os.Args) < 2 || os.Args[1] == "-" {
+		return "/dev/stdin"
+	}
+	return os.Args[1]
+}
+
+func main() {
+	filename := getFilenameFromArgs()
+	data, err := os.ReadFile(filename)
+	logFatalIfErr("Error reading file:", err)
 	fmt.Println(string(data))
 }
